@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div>
+    <header>
+        <nav th:replace="~{/fragments/navigation}"></nav>
+    </header>
+</div>
+<div class="container all-users">
+    <div class="main-div mb-2">
+        <table class="table table-hover text-judge text-white">
+            <thead>
+            <tr class="row">
+                <th class="col" scope="col"><h5 class="text-center">Email</h5></th>
+                <th class="col" scope="col"><h5 class="text-center">Username</h5></th>
+                <th class="col" scope="col"><h5 class="text-center">Edit user</h5></th>
+                <th class="col" scope="col"><h5 class="text-center">Delete</h5></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row" th:each="user : ${allUsers}"
+                th:object="${user}">
+                <td class="col">
+                    <h5 th:text="*{email}"/>
+                </td>
+                <td class="col">
+                    <h5 th:text="*{username}"/>
+                </td>
+
+                <td class="col d-flex justify-content-around">
+                    <a th:href="@{/users/{userId}/edit(userId=*{id})}">
+                        <button type="submit" class="btn btn-info btn-sm" value="set"> Edit</button></a>
+                </td>
+                <td class="col d-flex justify-content-around">
+                    <form th:unless="${user.isAdmin}"
+                          th:method="POST"
+                          th:action="@{/users/{userId}/delete(userId=*{id})}">
+
+                        <button type="submit" class="btn btn-info btn-sm" value="set">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</header>
+<footer></footer>
+<script th:src="@{../js/popup.js}"></script>
+</body>
+</html>

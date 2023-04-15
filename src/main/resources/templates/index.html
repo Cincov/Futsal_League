@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div>
+    <header>
+        <nav th:replace="~{/fragments/navigation}"></nav>
+    </header>
+</div>
+<main>
+
+    <div class="container-fluid text-lg-center text-light text-decorationfa-border index-welcome">
+        <h1>Welcome to Futsal League</h1>
+        <h3>If you don't have an account yet, register!</h3>
+        <h3>Create a team and become a great manager!</h3>
+        <p class="lead">
+            <a th:href="@{/users/register}"><button type="button"
+                                                    class="btn btn-outline-warning btn-lg">Register</button></a>
+            <a th:href="@{/users/login}"><button type="button"
+                                                 class="btn btn-outline-warning btn-lg">Login</button></a>
+    </div>
+
+</main>
+<footer>
+    <!-- place footer here -->
+</footer>
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+</script>
+</body>
+
+</html>

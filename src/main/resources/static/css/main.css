@@ -1,0 +1,95 @@
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)), url('/images/main.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
+
+
+#navbarSupportedContent > ul > li > a:hover  {
+    color: goldenrod;
+}
+
+#navbarSupportedContent > ul > li.nav-item.dropdown > ul > li > a:hover  {
+    color: goldenrod;
+}
+
+.index-welcome {
+    width: fit-content;
+    height: fit-content;
+    margin-top: 205px;
+    padding: 25px;
+    background-color: rgba(7, 47, 79, 0.43);
+    padding-bottom: 25px;
+    border-radius: 20px 20px 30px 30px;
+}
+
+body > main > div{
+    margin-top: 130px;
+}
+
+.all-users {
+    margin-top: 180px;
+    color: wheat;
+    width: 50%;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 1px;
+    background-color: rgba(7, 47, 79, 0.43);
+    border: aqua;
+    border-radius: 20px 20px 30px 30px;
+}
+
+.table-teams {
+    text-align: center;
+    width: 650px;
+}
+
+.table-teams > table {
+    border-radius: 25px;
+}
+
+.register-form{
+    width: 30%;
+    height: auto;
+    background-color: rgba(7, 47, 79, 0.63);
+    margin: 95px 35%;
+    padding-bottom: 25px;
+    border-radius: 20px 20px 30px 30px;
+}
+
+.login-form{
+    width: 30%;
+    height: 290px;
+    background-color: rgba(7, 47, 79, 0.63);
+    margin: 95px 35%;
+    border-radius: 20px 20px 30px 30px;
+}
+
+. login-button {
+    align-content: center;
+    margin-top: 20px;
+}
+
+.create-player {
+    width: 30%;
+    height: 290px;
+    background-color: rgba(7, 47, 79, 0.63);
+    margin: 95px 35%;
+    border-radius: 20px 20px 30px 30px;
+}
+
+.player-details {
+    margin-top: 150px;
+}
+
+body > main > div > div > div.col-4.text-center.text-white {
+    margin-top: 145px;
+}
+
+.player-info {
+    background-color: rgba(7, 47, 79, 0.63);
+    color: white;
+}

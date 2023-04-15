@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top" xmlns:sec="">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><span class="text-warning">Futsal</span>League</a>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link" th:href="@{/users/all}">All users</a>
+        </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                <th:block  sec:authorize="!isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/login">Login</a>
+                    </li>
+                </th:block>
+                <th:block  sec:authorize="isAuthenticated()">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/users/all}">All users</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/teams/table}">Table</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Create member
+                        </a>
+                        <ul class="dropdown-menu bg-opacity-50">
+                            <li><a class="dropdown-item" th:href="@{/coaches/add}">Coach</a></li>
+                            <li><a class="dropdown-item" th:href="@{/players/add}">Players</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/teams/myTeam}">My team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/market/allPlayer}">Market</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form method="POST" th:action="@{/users/logout}" class="form-inline my-2 my-lg-0 ">
+                            <button type="submit" name="submit" value="value" class="btn btn-link nav-link">Logout
+                            </button>
+                        </form>
+                    </li>
+                </th:block>
+            </ul>
+
+        </div>
+    </div>
+</nav>

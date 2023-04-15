@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+</head>
+
+<body>
+
+<div>
+    <header th:replace="~{/fragments/navigation}">
+    </header>
+</div>
+
+<main>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-center text-warning mt-5">My team</h2>
+                <div class="offers row-8 mx-auto d-flex flex-row justify-content-center">
+
+                    <div th:object="${team}"
+                         class="offer card col-sm-6 col-md-3  col-lg-4 m-1 p-0">
+                        <div class="card-img-top-wrapper">
+                        </div>
+                        <div class="card-body pb-1">
+                            <h5 class="card-title" th:text="*{name}">
+                                Offer summary
+                            </h5>
+                        </div>
+                        <ul class="offer-details list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="card-text">•Team Rating :
+                                    <th:block th:text="*{rating}"></th:block>
+                                </div>
+                                <div class="card-text">• Coach name :
+                                    <th:block th:text="*{getCoachName()}"></th:block>
+                                </div>
+                                <div class="card-text">• Coach rating :
+                                    <th:block th:text="*{getCoachRating()}"></th:block>
+                                </div>
+                                <div class="card-text">• Budget :
+                                    <th:block th:text="*{budget}"></th:block>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offers row-10 mx-auto d-flex flex-row justify-content-center">
+                    <div th:each="player : ${goalkeepers}" th:object="${player}"
+                         class="offer card col-sm-6 col-md-3  col-lg-4 m-1 p-0">
+                        <div class="card-img-top-wrapper">
+                        </div>
+                        <div class="card-body pb-1">
+                            <h3 class="card-title" th:text="|*{firstName} *{lastName}|">
+                                Offer summary
+                            </h3>
+                        </div>
+                        <ul class="offer-details list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="card-text">• Position :
+                                    <th:block th:text="*{position}"></th:block>
+                                </div>
+                                <div class="card-text">• Rating
+                                    <th:block th:text="*{rating}"></th:block>
+                                </div>
+                            </li>
+                            <div class="card-body">
+                                <a class="card-link" th:href="@{/players/{playerId}(playerId = *{id})}">Details</a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="offers row-12 mx-auto d-flex flex-row justify-content-center">
+                    <div th:each="player : ${defenders}" th:object="${player}"
+                         class="offer card col-sm-6 col-md-3  col-lg-4 m-1 p-0">
+                        <div class="card-img-top-wrapper">
+                        </div>
+                        <div class="card-body pb-1">
+                            <h3 class="card-title" th:text="|*{firstName} *{lastName}|">
+                                Offer summary
+                            </h3>
+                        </div>
+                        <ul class="offer-details list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="card-text">• Position :
+                                    <th:block th:text="*{position}"></th:block>
+                                </div>
+                                <div class="card-text">• Rating
+                                    <th:block th:text="*{rating}"></th:block>
+                                </div>
+                            </li>
+                            <div class="card-body">
+                                <a class="card-link" th:href="@{/players/{playerId}(playerId = *{id})}">Details</a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offers row mx-auto d-flex flex-row justify-content-center">
+                    <div th:each="player : ${wings}" th:object="${player}"
+                         class="offer card col-sm-6 col-md-3  col-lg-4 m-1 p-0">
+                        <div class="card-img-top-wrapper">
+                        </div>
+                        <div class="card-body pb-1">
+                            <h3 class="card-title" th:text="|*{firstName} *{lastName}|">
+                                Offer summary
+                            </h3>
+                        </div>
+                        <ul class="offer-details list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="card-text">• Position :
+                                    <th:block th:text="*{position}"></th:block>
+                                </div>
+                                <div class="card-text">• Rating
+                                    <th:block th:text="*{rating}"></th:block>
+                                </div>
+                            </li>
+                            <div class="card-body">
+                                <a class="card-link" th:href="@{/players/{playerId}(playerId = *{id})}">Details</a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offers row mx-auto d-flex flex-row justify-content-center">
+                    <div th:each="player : ${forwards}" th:object="${player}"
+                         class="offer card col-sm-6 col-md-3  col-lg-2 m-1 p-0">
+                        <div class="card-img-top-wrapper">
+                        </div>
+                        <div class="card-body pb-1">
+                            <h3 class="card-title" th:text="|*{firstName} *{lastName}|">
+                                Offer summary
+                            </h3>
+                        </div>
+                        <ul class="offer-details list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="card-text">• Position :
+                                    <th:block th:text="*{position}"></th:block>
+                                </div>
+                                <div class="card-text">• Rating
+                                    <th:block th:text="*{rating}"></th:block>
+                                </div>
+                            </li>
+                            <div class="card-body">
+                                <a class="card-link" th:href="@{/players/{playerId}(playerId = *{id})}">Details</a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 text-center text-white">
+                <h4>If you don't happy from some player send him to marker,
+                    or quick sale and take 500$</h4>
+            </div>
+        </div>
+    </div>
+
+</main>
+<footer>
+    <!-- place footer here -->
+</footer>
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+</script>
+</body>
+
+</html>
