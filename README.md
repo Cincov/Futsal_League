@@ -1,0 +1,1 @@
+# Futsal_League You can run the app with the following users: User 1: email: admin@example.com, password: asdasd User 2: email: pesho@pesho.bg, password: asdasd User 3: gosho@gosho.bg: user, password: asdasd
