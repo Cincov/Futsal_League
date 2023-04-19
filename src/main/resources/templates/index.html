@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="">
 
 <head th:replace="~{/fragments/head}">
 </head>
@@ -11,23 +11,57 @@
     </header>
 </div>
 <main>
+    <th:block  sec:authorize="!isAuthenticated()">
+        <div class="container-fluid text-lg-center text-light text-decorationfa-border index-welcome">
+            <h1>Welcome to Futsal League</h1>
+            <h3>If you don't have an account yet, register!</h3>
+            <h3>Create a team and become a great manager!</h3>
+            <p class="lead">
+                <a th:href="@{/users/register}">
+                    <button type="button"
+                            class="btn btn-outline-warning btn-lg">Register
+                    </button>
+                </a>
+                <a th:href="@{/users/login}">
+                    <button type="button"
+                            class="btn btn-outline-warning btn-lg">Login
+                    </button>
+                </a>
+        </div>
+    </th:block>
+    <th:block  sec:authorize="isAuthenticated()">
+    <div class="container" >
 
-    <div class="container-fluid text-lg-center text-light text-decorationfa-border index-welcome">
-        <h1>Welcome to Futsal League</h1>
-        <h3>If you don't have an account yet, register!</h3>
-        <h3>Create a team and become a great manager!</h3>
-        <p class="lead">
-            <a th:href="@{/users/register}"><button type="button"
-                                                    class="btn btn-outline-warning btn-lg">Register</button></a>
-            <a th:href="@{/users/login}"><button type="button"
-                                                 class="btn btn-outline-warning btn-lg">Login</button></a>
+        <h2 class="text-warning text-lg-center">
+            Welcome to Futsal League!
+        </h2>
+        <h3 class="text-white text-center">
+            Create, sell or buy players and become a champion!
+        </h3>
+        <div class="container table-teams text-white text-center" id="topTeams">
+            <h2>This is top 3 Teams</h2>
+            <table class="table table-info table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Team name</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Budget</th>
+                </tr>
+                </thead>
+                <tbody id="teams-container" >
+
+                </tr>
+                </tbody>
+            </table>
+            <div class="row d-flex justify-content-center text-center">
+                <button type="submit" class="btn btn-info btn-lg" id="loadStats">LOAD TEAMS</button>
+            </div>
+        </div>
+
     </div>
-
+    </th:block>
 </main>
-<footer>
-    <!-- place footer here -->
-</footer>
-<!-- Bootstrap JavaScript Libraries -->
+<footer th:replace="~{/fragments/footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
 </script>
@@ -35,6 +69,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
 </script>
+<script type="text/javascript" th:src="@{/js/topTeams.js}"></script>
 </body>
 
 </html>

@@ -13,6 +13,7 @@ import softuni.futsalleague.domein.entities.TeamEntity;
 import softuni.futsalleague.domein.entities.UserEntity;
 import softuni.futsalleague.domein.entities.UserRoleEntity;
 import softuni.futsalleague.domein.enums.UserRoleEnums;
+import softuni.futsalleague.exeption.ObjectNotFoundException;
 import softuni.futsalleague.repository.PlayerRepository;
 import softuni.futsalleague.repository.TeamRepository;
 import softuni.futsalleague.repository.UserRepository;
@@ -76,13 +77,10 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElse(null);
-        Long id = user.getId();
-        TeamEntity team = teamRepository.findByUser_Id(id).orElse(null);
-//        List<PlayerEntity> allByTeamEntityId = playerRepository.findAllByTeamEntity_Id(team.getId());
-//        allByTeamEntityId.forEach(playerEntity -> {
-//            playerRepository.deleteById(playerEntity.getId());
-//        });
+        UserEntity user = userRepository.findById(userId).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));;
+        TeamEntity team = teamRepository.findByUser_Id(user.getId()).
+                orElseThrow(() -> new ObjectNotFoundException("Team not found"));;
         playerRepository.deleteAllByTeamEntity_Id(team.getId());
         teamRepository.deleteById(team.getId());
         userRepository.deleteById(userId);
@@ -90,28 +88,29 @@ public class UserService {
 
     public UserViewModel findUserById(Long userId) {
         Optional<UserEntity> byId = userRepository.findById(userId);
-
         return modelMapper.map(byId, UserViewModel.class);
     }
 
     public void editUser(Long userId, UserEditFormDTO userEditFormDTO) {
 
-        UserEntity user = userRepository.findById(userId).orElse(null);
-        TeamEntity team = teamRepository.findByUser_Id(userId).orElse(null);
-       // playerRepository.deleteAllByTeamEntity_Id(team.getId());
-
+        UserEntity user = userRepository.findById(userId).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));;
+        TeamEntity team = teamRepository.findByUser_Id(userId).
+                orElseThrow(() -> new ObjectNotFoundException("Team not found"));;
         List<UserRoleEntity> roles = new ArrayList<>();
 
         if (userEditFormDTO.getModerator() != null) {
-            roles.add(userRoleRepository.findUserRoleEntityByRole(UserRoleEnums.MODERATOR).orElse(null));
+            roles.add(userRoleRepository.findUserRoleEntityByRole(UserRoleEnums.MODERATOR).
+                    orElseThrow(() -> new ObjectNotFoundException("Role not found")));
         }
         if (userEditFormDTO.getUser() != null) {
-            roles.add(userRoleRepository.findUserRoleEntityByRole(UserRoleEnums.USER).orElse(null));
+            roles.add(userRoleRepository.findUserRoleEntityByRole(UserRoleEnums.USER).
+                    orElseThrow(() -> new ObjectNotFoundException("Role not found")));
         }
-        if (userEditFormDTO.getUser() != null) {
-            roles.add(userRoleRepository.findUserRoleEntityByRole(UserRoleEnums.ADMIN).orElse(null));
+        if (userEditFormDTO.getAdmin() != null) {
+            roles.add(userRoleRepository.findUserRoleEntityByRole(UserRoleEnums.ADMIN).
+                    orElseThrow(() -> new ObjectNotFoundException("Role not found")));
         }
-
         if (userEditFormDTO.getUsername() != null) {
             user.setUsername(userEditFormDTO.getUsername());
         }

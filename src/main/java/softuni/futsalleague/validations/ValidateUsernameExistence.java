@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = UsernameExistenceValidator.class)
 public @interface ValidateUsernameExistence {
+
     String message() default "User with this username already exists";
 
     Class<?>[] groups() default {};

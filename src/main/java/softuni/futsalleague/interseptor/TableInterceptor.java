@@ -9,7 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-public class LoggingInterceptor implements HandlerInterceptor {
+public class TableInterceptor implements HandlerInterceptor {
 
     private final Logger LOG = LoggerFactory.getLogger(LoggingInterceptor.class);
 

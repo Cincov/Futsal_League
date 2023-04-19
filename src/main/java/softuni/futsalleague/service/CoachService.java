@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.futsalleague.domein.dtos.binding.CoachCreateFormDto;
 import softuni.futsalleague.domein.entities.CoachEntity;
+import softuni.futsalleague.domein.entities.TeamEntity;
 import softuni.futsalleague.repository.CoachRepository;
 import softuni.futsalleague.repository.TeamRepository;
 
@@ -22,8 +23,8 @@ public class CoachService {
     }
 
     public boolean createCoach(CoachCreateFormDto coachCreateFormDto, String username) {
-
-        if (teamRepository.findByUser_Email(username).getCoachEntity() != null) {
+        TeamEntity byUserEmail = teamRepository.findByUser_Email(username);
+        if (byUserEmail.getCoachEntity() != null) {
             return false;
         }
 

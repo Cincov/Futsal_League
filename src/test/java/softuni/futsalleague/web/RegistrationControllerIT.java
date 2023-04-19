@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RegistrationControllerIT {
+class RegistrationControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -27,11 +27,29 @@ public class RegistrationControllerIT {
                         param("lastName", "Peshov").
                         param("password", "asdasd").
                         param("confirmPassword", "asdasd").
-                        param("teamName", "PeshoTeam").
+                        param("teamName", "PeshosTeam").
+                        param("username", "pepi").
                         with(csrf())
                 ).
                 andExpect(status().is3xxRedirection()).
                 andExpect(redirectedUrl("/users/login"));
+
+    }
+
+    @Test
+    void testRegistrationWithError() throws Exception {
+        mockMvc.perform(post("/users/register").
+                        param("email", "pesho@example.com").
+                        param("firstName", "1").
+                        param("lastName", "Peshov").
+                        param("password", "asdasd").
+                        param("confirmPassword", "asdasd").
+                        param("teamName", "PeshosTeam").
+                        param("username", "pepi").
+                        with(csrf())
+                ).
+                andExpect(status().is3xxRedirection()).
+                andExpect(redirectedUrl("/users/register"));
 
     }
 }

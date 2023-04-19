@@ -9,6 +9,7 @@ import softuni.futsalleague.domein.dtos.view.PlayerViewModel;
 import softuni.futsalleague.domein.entities.PlayerEntity;
 import softuni.futsalleague.domein.entities.TeamEntity;
 import softuni.futsalleague.domein.enums.PlayerPosition;
+import softuni.futsalleague.exeption.ObjectNotFoundException;
 import softuni.futsalleague.repository.PlayerRepository;
 import softuni.futsalleague.repository.TeamRepository;
 import softuni.futsalleague.repository.UserRepository;
@@ -16,7 +17,6 @@ import softuni.futsalleague.repository.UserRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.aspectj.runtime.internal.Conversions.intValue;
 
@@ -104,7 +104,8 @@ public class PlayerService {
     }
 
     public void sendToMarket(Long id) {
-        PlayerEntity player = playerRepository.findById(id).orElse(null);
+        PlayerEntity player = playerRepository.findById(id).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));
         player.setSale(true);
         playerRepository.save(player);
     }
@@ -124,17 +125,18 @@ public class PlayerService {
 
     @Transactional
     public boolean buyPlayer(Long id, String username) {
-        PlayerEntity player = playerRepository.findById(id).orElse(null);
+        PlayerEntity player = playerRepository.findById(id).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
-        TeamEntity playerTeam = teamRepository.findTeamEntityByName(player.getTeamEntity().getName()).orElse(null);
+        TeamEntity playerTeam = teamRepository.findTeamEntityByName(player.getTeamEntity().getName()).
+                orElseThrow(() -> new ObjectNotFoundException("Team not found"));
 
         TeamEntity buyerTeam = teamRepository.findByUser_Email(username);
 
         if (playerTeam.getPlayers().size() == 15 ||
-                playerRepository.findPlayerEntitiesByPosition(player.getPosition()).size() == 3) {
+                playerRepository.findPlayerEntitiesByPosition(player.getPosition(), playerTeam.getName()).size() == 3) {
             return false;
         }
-
 
         int budget = intValue(buyerTeam.getBudget());
         int price = intValue(player.getPrice());
@@ -149,7 +151,6 @@ public class PlayerService {
         playerTeamPlayers.remove(player);
         buyerTeamPlayers.add(player);
 
-
         player.setTeamEntity(buyerTeam);
         buyerTeam.setPlayers(buyerTeamPlayers);
         playerTeam.setPlayers(playerTeamPlayers);
@@ -158,7 +159,6 @@ public class PlayerService {
 
         buyerTeam.setBudget(BigDecimal.valueOf(budget - price));
         playerTeam.setBudget(BigDecimal.valueOf(playerTeamBudget + price));
-
 
 
         teamRepository.saveAndFlush(buyerTeam);
@@ -173,7 +173,8 @@ public class PlayerService {
         TeamEntity team = teamRepository.findByUser_Email(username);
         int budget = intValue(team.getBudget()) + 500;
         team.setBudget(BigDecimal.valueOf(budget));
-        PlayerEntity player = playerRepository.findById(id).orElse(null);
+        PlayerEntity player = playerRepository.findById(id).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));
         List<PlayerEntity> players = team.getPlayers();
         players.remove(player);
         team.setPlayers(players);
@@ -192,15 +193,53 @@ public class PlayerService {
     }
 
     public PlayerViewModel findById(Long id) {
-        Optional<PlayerEntity> player = playerRepository.findById(id);
-        PlayerViewModel playerViewModel = playerRepository.findById(id)
-                .map(playerEntity -> modelMapper.map(playerEntity, PlayerViewModel.class))
-                .orElse(null);
+        PlayerEntity player = playerRepository.findById(id).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        PlayerViewModel playerViewModel = new PlayerViewModel();
+        playerViewModel.setId(player.getId())
+                .setFirstName(player.getFirstName())
+                .setLastName(player.getLastName())
+                .setPosition(player.getPosition().name())
+                .setRating(player.getRating())
+                .setDefending(player.getDefending())
+                .setDribbling(player.getDribbling())
+                .setPace(player.getPace())
+                .setShooting(player.getShooting())
+                .setPrice(player.getPrice())
+                .setTeamName(player.getTeamEntity().getName())
+                .setPassing(player.getPassing());
 
-        playerViewModel.setTeamName(player.get().getTeamEntity().getName());
         return playerViewModel;
     }
 
+    public void decreasePlayersPrice() {
+
+        List<PlayerEntity> allPlayersInMarket = playerRepository.findAllPlayerEntitiesBySale();
+
+        allPlayersInMarket.forEach(playerEntity -> {
+            BigDecimal price = playerEntity.getPrice().subtract(BigDecimal.valueOf(250));;
+            if (intValue(price) > 250) {
+                playerEntity.setPrice(price);
+                playerRepository.saveAndFlush(playerEntity);
+            }
+        });
+    }
+
+    public void deletePlayer(Long id) {
+        PlayerEntity player = playerRepository.findById(id).
+                orElseThrow(() -> new ObjectNotFoundException("User not found"));
+
+        TeamEntity team = teamRepository.findTeamEntityByPlayersContains(player).
+                orElseThrow(() -> new ObjectNotFoundException("Team not found"));;
+
+        List<PlayerEntity> players = team.getPlayers();
+        players.remove(player);
+        team.setPlayers(players);
+
+        teamRepository.saveAndFlush(team);
+        playerRepository.deleteById(id);
+
+    }
 }
 
 

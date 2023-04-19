@@ -68,9 +68,9 @@ body > main > div{
     border-radius: 20px 20px 30px 30px;
 }
 
-. login-button {
-    align-content: center;
-    margin-top: 20px;
+.btn-lgn {
+    margin-top: 25px;
+    margin-left: 100px;
 }
 
 .create-player {
@@ -79,6 +79,10 @@ body > main > div{
     background-color: rgba(7, 47, 79, 0.63);
     margin: 95px 35%;
     border-radius: 20px 20px 30px 30px;
+}
+
+.my-team {
+    margin-top: 70px;
 }
 
 .player-details {

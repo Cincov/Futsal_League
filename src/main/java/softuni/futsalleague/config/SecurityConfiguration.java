@@ -14,6 +14,7 @@ import org.springframework.security.web.context.DelegatingSecurityContextReposit
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import softuni.futsalleague.domein.enums.UserRoleEnums;
 import softuni.futsalleague.repository.UserRepository;
 import softuni.futsalleague.service.ApplicationUserDetailsService;
 
@@ -29,13 +30,13 @@ public class SecurityConfiguration {
                 authorizeHttpRequests().
                 requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                 requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll().
+                requestMatchers("/teams").hasRole(UserRoleEnums.ADMIN.name()).
                 anyRequest().authenticated().
                 and().
                 formLogin().
                 loginPage("/users/login").
                 usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY).
                 passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY).
-
                 defaultSuccessUrl("/", true).
                 failureForwardUrl("/users/login-error").
                 and().logout().

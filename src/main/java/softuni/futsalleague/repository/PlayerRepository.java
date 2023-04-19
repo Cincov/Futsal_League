@@ -16,10 +16,12 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     @Query("SELECT p FROM PlayerEntity p where p.isSale = true and p.teamEntity.user.email != ?1")
     List<PlayerEntity> findPlayerEntitiesBySale(String username);
 
-//    Optional<TeamEntity> findPlayerEntityByTeamEntity();
 
-    @Query("SELECT p FROM PlayerEntity  p where p.position = ?1")
-    List<PlayerEntity> findPlayerEntitiesByPosition(PlayerPosition position);
+    @Query("SELECT p FROM PlayerEntity p where p.isSale = true ")
+    List<PlayerEntity> findAllPlayerEntitiesBySale();
+
+    @Query("SELECT p FROM PlayerEntity  p where p.position = ?1 and p.teamEntity.name = ?2")
+    List<PlayerEntity> findPlayerEntitiesByPosition(PlayerPosition position, String teamName);
 
     void deleteAllByTeamEntity_Id(Long id);
 
