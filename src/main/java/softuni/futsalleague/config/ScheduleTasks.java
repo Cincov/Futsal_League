@@ -23,7 +23,7 @@ public class ScheduleTasks {
         playerService.decreasePlayersPrice();
     }
 
-    @Scheduled(cron = "0/5 * * * * *")
+    @Scheduled(cron = "0/2 * * * * *")
     public void decreaseTeamsBudget() {
         teamService.decreaseTeamsBudget();
     }

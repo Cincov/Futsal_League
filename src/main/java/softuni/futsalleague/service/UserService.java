@@ -91,6 +91,7 @@ public class UserService {
         return modelMapper.map(byId, UserViewModel.class);
     }
 
+    @Transactional
     public void editUser(Long userId, UserEditFormDTO userEditFormDTO) {
 
         UserEntity user = userRepository.findById(userId).

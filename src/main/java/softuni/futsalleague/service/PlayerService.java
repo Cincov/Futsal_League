@@ -79,7 +79,7 @@ public class PlayerService {
         player.setTeamEntity(teamRepository.findByUser_Email(username));
         player.setPrice(setPlayerPrice(player));
         playerRepository.save(player);
-        teamService.updatePlayersList(username, player);
+        teamService.updatePlayersList(team.getName(), player);
 
         return true;
     }
@@ -148,22 +148,18 @@ public class PlayerService {
 
         List<PlayerEntity> buyerTeamPlayers = buyerTeam.getPlayers();
         List<PlayerEntity> playerTeamPlayers = playerTeam.getPlayers();
-        playerTeamPlayers.remove(player);
-        buyerTeamPlayers.add(player);
 
-        player.setTeamEntity(buyerTeam);
-        buyerTeam.setPlayers(buyerTeamPlayers);
-        playerTeam.setPlayers(playerTeamPlayers);
         player.setSale(false);
-
 
         buyerTeam.setBudget(BigDecimal.valueOf(budget - price));
         playerTeam.setBudget(BigDecimal.valueOf(playerTeamBudget + price));
 
+        teamService.updatePlayersListToSale(playerTeam.getName(), player);
+        teamService.updatePlayersList(buyerTeam.getName(), player);
 
-        teamRepository.saveAndFlush(buyerTeam);
-        teamRepository.saveAndFlush(playerTeam);
-        playerRepository.saveAndFlush(player);
+        teamRepository.save(buyerTeam);
+        teamRepository.save(playerTeam);
+        playerRepository.save(player);
 
         return true;
     }
@@ -177,7 +173,8 @@ public class PlayerService {
                 orElseThrow(() -> new ObjectNotFoundException("User not found"));
         List<PlayerEntity> players = team.getPlayers();
         players.remove(player);
-        team.setPlayers(players);
+
+        teamService.updatePlayersListToSale(team.getName(), player);
 
         teamRepository.saveAndFlush(team);
         playerRepository.deleteById(id);

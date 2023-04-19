@@ -1,5 +1,6 @@
 package softuni.futsalleague.service;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class TeamService {
         return playerViewModels;
     }
 
-
+    @Transactional
     public List<TeamViewModel> findAllTeams() {
 
         List<TeamViewModel> orderTeams = new ArrayList<>();
@@ -83,6 +84,7 @@ public class TeamService {
         return orderTeams;
     }
 
+    @Transactional
     public void updateTeam(String username, CoachEntity coach) {
         TeamEntity team = teamRepository.findByUser_Email(username);
 
@@ -145,16 +147,29 @@ public class TeamService {
         }
     }
 
-    public void updatePlayersList(String username, PlayerEntity player) {
-        TeamEntity team = teamRepository.findByUser_Email(username);
+    @Transactional
+    public void updatePlayersList(String teamName, PlayerEntity player) {
+        TeamEntity team = teamRepository.findTeamEntityByName(teamName).
+                orElseThrow(() -> new ObjectNotFoundException("Team not found"));;
 
         List<PlayerEntity> players = team.getPlayers();
         players.add(player);
         team.setPlayers(players);
         team.setRating(setTeamRating(team.getPlayers(), team.getCoachEntity()));
-        teamRepository.saveAndFlush(team);
+        teamRepository.save(team);
     }
 
+    @Transactional
+    public void updatePlayersListToSale(String teamName, PlayerEntity player) {
+        TeamEntity team = teamRepository.findTeamEntityByName(teamName).
+                orElseThrow(() -> new ObjectNotFoundException("Team not found"));
+
+        List<PlayerEntity> players = team.getPlayers();
+        players.remove(player);
+        team.setPlayers(players);
+        team.setRating(setTeamRating(team.getPlayers(), team.getCoachEntity()));
+        teamRepository.saveAndFlush(team);
+    }
 
     public List<TeamViewModel> getTopThreeTeams() {
         List<TeamViewModel> list = new ArrayList<>();
@@ -167,15 +182,15 @@ public class TeamService {
     }
 
     public void decreaseTeamsBudget() {
-
         List<TeamEntity> teams = teamRepository.findAllTeams();
         teams.forEach(teamEntity -> {
             BigDecimal teamBudget = teamEntity.getBudget().subtract(BigDecimal.valueOf(150));
+            teamEntity.setBudget(teamBudget);
 
             if (intValue(teamBudget) <= 500) {
                 teamEntity.setBudget(BigDecimal.valueOf(500));
-                teamRepository.saveAndFlush(teamEntity);
             }
+            teamRepository.saveAndFlush(teamEntity);
         });
 
     }
